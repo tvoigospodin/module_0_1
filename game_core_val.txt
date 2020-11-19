@@ -1,0 +1,33 @@
+def game_core_val(number):
+    '''Имеем загаданное число в диапозоне от 1 до rand_max. На каждой итерации сравниваем 
+    загаданное число (number) c переменной для сравнения (predict). Из predict в каждой 
+    итерации вычитаем или складываем переменную x//2 (в зависимости от знака '>' или '<', 
+    тем самым постепенно подбираясь к загаданному числу'''
+    import random
+    count = 1 
+    rand_max = 100 # максимальное значение диапозона для псевдослучйного числа
+    number = random.randint(1, rand_max) 
+    predict = rand_max//2 # число для сравнения.
+    x = rand_max//2  # число для сложения или вычитания из числа сравнения
+    while True:
+        count += 1
+        x = x // 2    
+        if x == 0:    # если x=1, то при целочисленном делении на 2 получаем 0, 
+            x += 1    # чтобы избежать бесконечного цикла приравниваем x единице
+        if predict < number: 
+            predict = predict + x
+        else: 
+            predict = predict - x
+        if number == predict:
+                return(count) # выход из цикла, если число было угадано   
+def score_game(game_core):
+    '''Запускаем игру 1000 раз, чтобы узнать, как быстро игра угадывает число'''
+    count_ls = []
+    np.random.seed(1)  # фиксируем RANDOM SEED, чтобы эксперимент был воспроизводим
+    random_array = np.random.randint(1,101, size=(1000))
+    for number in random_array:
+        count_ls.append(game_core(number))
+    score = int(np.mean(count_ls))
+    print(f"Алгоритм угадывает число в среднем за {score} попыток")
+    return(score)
+score_game(game_core_val)
